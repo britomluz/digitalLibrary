@@ -39,10 +39,19 @@ En el BookController se encuentran los métodos GET, POST, PATCH y DELETE necesa
 y en el mismo se realizan las validaciones necesarias para realizar con éxito el CRUD de lo contrario arroja un ResponseEntity con el error indicado.
 
 Los datos persisten en H2 console, la cual cuenta con seguridad y es necesario estar logeado para ver los datos.
-NOTA: en este caso para facilitar la vista de la API se ha dejado publico el acceso a H2 y a las API
 
 La ruta de la API para los libros es http://localhost:8080/api/books o bien  http://localhost:8080/rest/books
 La ruta de la API para los usuarios es http://localhost:8080/api/users o bien  http://localhost:8080/rest/users
+
+
+NOTA: en este caso para facilitar la vista de la API se ha dejado publico el acceso a H2 y a las API
+
+Para verlo directamente se debe ingresar desde el link de heroku:
+https://dlibl.herokuapp.com/rest/books
+https://dlibl.herokuapp.com/api/books
+
+https://dlibl.herokuapp.com/rest/users
+https://dlibl.herokuapp.com/api/users
 
 
 Cuenta con jUnit para el testeo, la cual pasó con exito el test de los metodos principales.
