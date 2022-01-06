@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./styles/account.css">
+    <!-- <link rel="stylesheet" href="sweetalert2.min.css"> -->
+    <!-- <link rel="shortcut icon" href="./assets/bank_logo.png" type="image/x-icon"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <script src="https://kit.fontawesome.com/d55f8f06fd.js" crossorigin="anonymous"></script>
+    <title>Library</title>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <nav class="navbar navbar-light fixed-top d-flex align-items-center">
+
+            <div class="container-fluid d-flex align-items-center">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <i class="bi bi-book-fill cWhite"></i>                    
+                    <span class="px-2 cWhite"> Library</span> 
+                </a>
+                <ul id="navBar" class="navLIst d-flex justify-content-center flex-grow-1">
+                    <li class="nav-item">
+                      <a class="nav-link" aria-current="page" href="../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Mi cuenta</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="mybooks.html">Mis Libros</a>
+                    </li>
+                    <li v-if="user.role === 'ADMIN'" class="nav-item">
+                      <a id="admin" class="nav-link adminPanel cTwo" href="admin.html">Admin Panel</a>
+                    </li>
+                    
+                </ul>
+
+                <div class="dropdown ms-sm-0 flex-shrink-1 justify-content-end">
+                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                        id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                       <i class="bi bi-person-fill"></i>
+                        <span class="d-none d-sm-inline mx-1" v-cloak>{{user.firstName}}
+                            {{user.lastName}}</span>
+                    </a>
+                    <small class="d-none d-sm-inline mx-1 fw-lighter" v-cloak>{{user.email}}</small>
+                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item" href="myprofile.html">Mi perfil</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#" @click="logout">Salir</a></li>
+                    </ul>
+                </div>
+
+
+
+              <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon cWhite"></span>
+              </button>
+              <div class="offcanvas offcanvas-end menuRes" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <div class="dropdown py-sm-4 ms-sm-0 flex-shrink-1">
+                        <p  class="d-flex align-items-center text-decoration-none cWhite" >
+                           <i class="bi bi-person-fill"></i>
+                            <span >{{user.firstName}} {{user.lastName}}</span>
+                        </p>
+                        <small class="d-none d-sm-inline mx-1 fw-lighter" v-cloak>{{user.email}}</small>
+                        
+                    </div>
+                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                  <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                      <a class="nav-link" aria-current="page" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Mi cuenta</a>
+                      </li>
+                      <li v-if="user.role === 'ADMIN'" class="nav-item">
+                        <a class="nav-link adminPanel cOne" href="#">Admin Panel</a>
+                      </li>
+                    
+                  </ul>
+                  
+                </div>
+              </div>
+            </div>
+        </nav>
+        <div class="slide-container">
+            <i id="slide-left" class="bi bi-chevron-left arrow"></i>
+
+            <section class="container mt-5 mb-5" id="slider">
+
+                <div v-for="book in booksBestseller" class="thumbnail book-cell">
+                    <div class="book-img">
+                        <img :src="book.portada" alt=""
+                            class="book-photo">
+                    </div>
+                    <div class="book-content">
+                        <div class="book-title">{{book.titulo}}</div>
+                        <div class="book-author">por {{book.autor}}</div>
+
+                        <div class="book-sum">{{book.resenia}} </div>
+                        <button @click="showModal(book.id)" class="book-see" data-bs-toggle="modal" data-bs-target="#modalBook">Ver Libro</button>
+                    </div>
+                </div>
+
+
+            </section>
+            <i id="slide-right" class="bi bi-chevron-right arrow"></i>
+        </div>
+
+        <main class="row d-flex align-items-center justify-content-center mt-5 mb-5">
+            <div class="col-12 col-xl-3 px-4">
+                <div class="sidebar row mb-5 ">
+                    <div class="authors col-11 col-md-6 col-xl-12 mt-2">
+                        <div class="titleSidebar">
+                            <h5 class="fs-5 ">Autores de la semana</h5>
+                        </div>
+                        <div class="d-flex align-items-center m-3">
+                            <div class="number"><span>1</span></div>
+                            <span>Sebastian Jeremy</span>
+                        </div>
+                        <div class="d-flex align-items-center m-3">
+                            <div class="number"><span>2</span></div>
+                            <span>Jonathan Doe</span>
+                        </div>
+                        <div class="d-flex align-items-center m-3">
+                            <div class="number"><span>3</span></div>
+                            <span>Angeline Summer</span>
+                        </div>
+                        <div class="d-flex align-items-center m-3">
+                            <div class="number"><span>4</span></div>
+                            <span>Noah Jones</span>
+                        </div>
+                        <div class="d-flex align-items-center m-3">
+                            <div class="number"><span>5</span></div>
+                            <span>Tommy Adam</span>
+                        </div>
+                        <div class="d-flex align-items-center m-3">
+                            <div class="number"><span>6</span></div>
+                            <span>Ian Cassandra</span>
+                        </div>
+                    </div>
+                    <div class="books-years col-12 col-md-6 col-xl-12 mt-2">
+                        <div class="titleSidebar">
+                            <h5 class="fs-5 ">Lo mejor del año</h5>
+                        </div>
+                        <div v-for="book in booksYear" class="miniCard d-flex align-items-center m-3">
+                            <img class="book-photo"
+                                :src="book.portada" alt="">
+                            <div class="d-flex flex-column">
+                                <h3 class="book-title text-wrap">{{book.titulo}} </h3>
+                                <div class="book-author">por {{book.autor}}</div>
+                            </div>
+                        </div>                       
+                    </div>
+                </div>
+            </div>
+            <div class="col-11 col-xl-9 px-4">
+                <div class="titleSection d-flex flex-wrap justify-content-between align-items-center">
+                    <h2 class="fs-5 title">Más populares por Categoría</h2>                    
+                    <div class="categories d-flex justify-content-between align-items-center flex-wrap">
+                        <div>
+                            <input type="radio" name="c" id="todos" value="" v-model="bookCategory" checked>
+                            <label for="todos">Todos</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="c" id="ficcion" value="ficción" v-model="bookCategory">
+                            <label for="ficcion">Ficción</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="c" id="fantasia" value="fantasía" v-model="bookCategory">
+                            <label for="fantasia">Fantasía</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="c" id="novela" value="novela" v-model="bookCategory">
+                            <label for="novela">Novela</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="c" id="biografia" value="biografía" v-model="bookCategory">
+                            <label for="biografia">Biografía</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="c" id="juvenil" value="juvenil" v-model="bookCategory">
+                            <label for="juvenil">Juvenil</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="c" id="literatura" value="literatura" v-model="bookCategory">
+                            <label for="literatura">Literatura</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mainContainer row py-3 d-flex align-items-start">
+                    <div v-for="book in booksByCategory" class="col-12 col-sm-6 col-xxl-4 d-flex justify-content-between">
+                        <div  class="cardPopular">
+                            <img :src="book.portada" alt=""
+                                class="book-photo">
+                            <div class="d-flex flex-column justify-content-center">
+                                <h6 class="book-title text-wrap text-break">{{book.titulo}}</h6>
+                                <div class="book-author">por {{book.autor}}</div>
+
+                                <div class="book-sum">{{book.resenia}}</div>
+                                <div class="book-footer d-flex align-items-center">
+                                    <div @click="showModal(book.id)" class="book-see" data-bs-toggle="modal" data-bs-target="#modalBook">Ver libro
+                                    </div>                                                                     
+                                    <form @submit.prevent="addLibrary" class="">
+                                        <button  type="submit" :value="book.id" data-toggle="tooltip" data-placement="bottom" title="Añadir a la biblioteca">
+                                            <span><i v-if="book.type == 'FAV'"  class="bi bi-bookmarks-fill fs-4"></i></i></span>
+                                        </button>
+                                        <button type="submit" :value="book.id" >
+                                            <span><i v-if="book.type == 'NOFAV'" class="bi bi-bookmarks fs-4"></i></i></span>
+                                        </button>
+                                    </form>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+
+            </div>
+        </main>
+
+        <!-- my books -->
+
+        <section>
+
+        </section>
+
+        <!-- quotes -->
+        <section class="quotesCont d-flex flex-column align-items-start justify-content-center mt-5 mb-5">
+
+            <div class="titleSection d-flex justify-content-between align-items-center">
+                <h2 class="fs-5 title tQ">Quotes</h2>
+            </div>
+            <div class="row quotesContainer col-12 d-flex d-flex align-items-center justify-content-center">
+                <div class="col-12 col-sm-4 col-xxl-4 d-flex justify-content-center p-2">
+                    <div class="card-content qBg1">
+                        <div class="card-bio d-flex justify-content-start align-items-center mb-4">
+                            <div class="avatars">
+                                <img src="https://images.gr-assets.com/authors/1379017377p2/3503.jpg" alt="alt">
+                            </div>
+                            <h6> Maya Angelou </h6>
+                            <i class="fa fa-bookmark"></i>
+                        </div>
+                        <div class="card-description">
+                            <h5 class="quote-content"> He aprendido que la gente olvidará lo que has dicho, olvidarán lo que hiciste, pero no olvidará nunca lo que les hiciste sentir.</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4 col-xxl-4 d-flex justify-content-center p-2">
+                    <div class="card-content qBg2">
+                        <div class="card-bio d-flex justify-content-start align-items-center mb-4">
+                            <div class="avatars">
+                                <img src="https://images.gr-assets.com/authors/1218295974p2/165858.jpg" alt="alt">
+                            </div>
+                            <h6> Salvador Dalí </h6>
+                            <i class="fa fa-bookmark"></i>
+                        </div>
+                        <div class="card-description">
+                            <h5 class="quote-content"> Tienes que crear confusión sistemáticamente, libera la creatividad. Todo lo que es contradictorio crea vida.</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4 col-xxl-4 d-flex justify-content-center p-2">
+                    <div class="card-content qBg3">
+                        <div class="card-bio d-flex justify-content-start align-items-center mb-4">
+                            <div class="avatars">
+                                <img src="https://images.gr-assets.com/authors/1198590177p2/43244.jpg" alt="alt">
+                            </div>
+                            <h6> Groucho Marx </h6>
+                            <i class="fa fa-bookmark"></i>
+                        </div>
+                        <div class="card-description">
+                            <h5 class="quote-content"> I've learned that people will forget what you said, people will
+                                forget what you did, but people will never forget how you made them feel</h5>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+                
+            
+            
+        </section>
+
+        <!-- modal book -->
+        <!-- Modal -->
+        <div class="modal fade" id="modalBook" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">     
+                        <small>Detalles del libro</small>                   
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div v-for="book in bookModal" class="d-flex">
+                            <img :src="book.portada" alt="">
+                            <div class="modal-content">
+                                <h5 class="modal-title fs-2 cOne" id="exampleModalLabel">{{book.titulo}}</h5>
+                                <p class="mt-3">{{book.resenia}}</p>
+                                <h4 class="fs-1 cOne"><b> ${{book.precio}}</b></h4>
+                                <div class="d-flex flex-column mt-auto mb-5">
+                                    <span><b>Editorial: </b>{{book.editorial}}</span>
+                                    <span><b>Fecha de lanzamiento: </b>{{book.fechaLanzamiento}}</span>
+                                    <span><b>Categoría: </b>{{book.categoria}}</span>                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btnAll btn3 cWhite" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./scripts/main.js"></script>
+    <script src="./scripts/account.js"></script>
+
+</body>
+
+</html>

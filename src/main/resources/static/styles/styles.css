@@ -1,0 +1,323 @@
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Open Sans",sans-serif;
+    font-display: auto;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 24px;
+    color: #222;
+    background: #fff;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+:root{
+    /* --header-color: white;
+    --main-color1: rgba(135, 2, 35, 0.8);
+    --main-color2: rgba(202, 4, 53, 0.76);
+    --main-color3: #e94a6daf;
+    --main-color4: #f788a0;
+    --main-color5: #4405f7; */
+
+    --color-primary1: #6e5ac9!important;
+    --color-primary2: #d8a0fe!important;
+    --color-primary3: #4405f7!important;
+
+    --color-secondary1: #fbadaf!important;
+    --color-secondary2: #a4e0eb!important;
+    --color-secondary3: #edb9d6!important;
+    --color-secondary4: #fdca95!important;
+    --color-secondary5: #cbb5e2!important;
+   
+    
+ }
+ /* linear-gradient(to right, #2775ff, #008dff, #00a2ff, #00b5ff, #00c6ff) */
+
+ [v-cloak]{
+    display: none;
+    }
+
+ 
+ #login{
+     background: linear-gradient(to right, var(--color-primary1), var(--color-primary2));     
+     min-height: 100vh !important;
+     width: 100%;
+ }
+ #logo{
+     position: relative;
+     top: 20px;
+ }
+ .form-box{     
+     min-height: 500px;
+     position: relative;
+     margin: 20px auto;
+     padding: 5px;
+     background: #fff;
+     overflow: hidden;
+     box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+ }
+ .button-box{
+     width: 250px;
+     margin: 20px auto;
+     position: relative;
+     box-shadow: 0 0 10px 3px #0106491e;
+     border-radius: 30px;
+ }
+ #btn-index{
+     top: 0;
+     left: 0;
+     position: absolute;
+     width: 125px;
+     height: 100%;
+     background: linear-gradient(to right, var(--color-primary1), var(--color-primary2));
+    border-radius: 30px;
+    transition: .5s;
+ }
+ .toggle-btn{
+    left: 10px;
+    padding: 10px 17px;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    outline: none;
+    position: relative;
+    transition: .5s;
+}
+#toggle-btn1{
+    color:#fff
+}
+#toggle-btn2{
+    left: 35px;
+    color: black;
+    
+}
+ .input-group{
+     /* top: 130px; */
+     left: auto;
+     right: auto;
+     position: absolute;
+     width: 100%;
+     transition: .5s;
+ }
+ #group2{
+    top: 80px;    
+}
+ .input-field{
+     width: 80%;     
+     margin: 0 0 40px;
+     border: 0;
+     border-bottom: 2px solid var(--color-primary1);
+     outline: none;
+     background: transparent;
+ }
+ .input-field input{
+     
+     border: none;
+     margin: 0;
+ }
+ .input-field input:focus{
+    border: none;
+    outline: none;
+    margin: 0;
+}
+ .input-field input::placeholder{
+    color: var(--color-primary1);
+}
+.input-field i{
+    color: var(--color-primary1);
+    margin-right: 15px;
+}
+ 
+ #group2 .input-field{
+     margin: 0 0 20px;
+ }
+ .submit-btn{
+    flex: 0 1 auto;
+     width: 50%;
+     bottom: 0!important;
+     margin-top: 80px!important;
+     padding: 10px 0;
+     cursor: pointer;
+     display: block;     
+     border-radius: 30px !important;
+     outline: none;
+     border: 0;
+     
+ }
+ .btnL{     
+    border-radius: 30px !important;
+     color: #fff;
+     background-size: 200% auto;
+     box-shadow: 0 0 10px 3px #0106491e;
+     background-image: linear-gradient( to right, var(--color-primary1) 0%,var(--color-primary2) 51%,var(--color-primary1));
+     transition: .5s;
+ }
+ .btnL:hover {
+    background-position: right center; /* change the direction of the change here */
+  }
+ #group2 .submit-btn{
+     margin-top: 5px;
+ }
+ #group2{
+     left: -800px;
+ }
+ #mBB{
+     font-size: 1rem;
+     font-weight: bold;
+     color: var(--main-color1);
+ }
+ .btnAccount{
+     width: 80%;
+     display: flex;
+ }
+ .barraError{
+    width: 5px;
+    height: 40px;
+    background: rgb(190, 0, 0);    
+    position: absolute;
+}
+.circleError{
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background: rgb(190, 0, 0);    
+    position: absolute;
+    margin-left: -7px;
+}
+.er{
+    margin-right: 20px;
+}
+.circleError i{
+    color: white;
+    font: bolder;
+    font-size: 20px;    
+    line-height: 0.2;    
+    
+}
+
+/* navbar */
+.navbar{
+    background:linear-gradient(to top right, var(--color-primary1), var(--color-primary2));   
+    color: white;
+    height: 60px;
+}
+.navbar-brand span{
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;;
+    font-weight: bold;
+}
+.navbar ul{
+    list-style-type: none;
+}
+.navbar a{
+    color: white;
+}
+.adminPanel{
+    background: white;       
+    border-radius: 25px;
+}
+.navbar a#admin{
+ color: var(--color-primary1);
+}
+.active{
+    color: var(--color-primary3)!important;
+}
+/* navbarresponsive */
+.menuRes{
+ background:linear-gradient(to top right, var(--color-primary1), var(--color-primary2));   
+}
+
+.cWhite{
+    color: white;
+}
+.cOne{
+    color: var(--color-primary1);
+}
+.cTwo{
+ color: var(--color-primary2);
+}
+.bgWhite{
+    background: white;
+}
+.btnAll{
+     border: none;
+     border-radius: 30px;
+     padding: 5px 20px;
+}
+.btnAll:hover{
+     background: var(--color-primary2);
+ }
+.btn1{       
+ background: linear-gradient(to top right, var(--color-primary1), var(--color-primary2));
+}
+.btn2{
+    background: var(--color-primary2);   
+}
+ .btn3{
+     background: transparent;   
+     border: 1px solid white;
+}
+.btnModal{
+    background: white;
+    color: var(--color-primary1);
+}
+.btnModal:hover{
+ background: var(--color-primary2);
+ color: white;
+}
+button{
+    border: none;
+    background: transparent;
+}
+
+
+.navbar-toggler{
+    display: none;
+}    
+
+header{
+    margin-top: 60px;
+    height: 70vh;
+    width: 100%;
+}
+.divRight{
+    background: url("../assets/portada2.jpg");
+    background-position: right;
+    background-size: cover;
+    height: 70vh;
+}
+.divLeft{
+    background: white;
+    height: 70vh;
+}
+.info{
+    padding: 50px 0px;
+}
+.cardInfo{    
+    width: 280px;
+    border-radius: 10px;
+    min-height: 200px;
+}
+@media (max-width: 1024px){
+    
+}
+
+@media (max-width: 768px){
+   
+    .navbar-toggler{
+        display: flex;
+    }
+    #a{
+        display: none;
+    }
+    nav .navDrop{
+        display: none;
+    }
+    
+}
+
+@media (max-width: 425px){
+   
+}

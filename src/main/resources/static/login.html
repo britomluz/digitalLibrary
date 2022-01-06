@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="./styles/styles.css">
+  <!-- <link rel="stylesheet" href="sweetalert2.min.css"> -->
+  <!-- <link rel="shortcut icon" href="./assets/bank_logo.png" type="image/x-icon"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />  
+  <script src="https://kit.fontawesome.com/d55f8f06fd.js" crossorigin="anonymous"></script>
+  <title>Library</title>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <section class="row  g-0">
+      
+      <div id="login"
+        class="col-lg-5 d-flex align-items-center flex-column justify-content-around">
+        <div id="logo" class="d-flex align-items-center">
+          <i class="bi bi-book-fill px-2 fs-1 cWhite"></i>    
+          <h1 class="cWhite"></i>Digital Library</h1>
+        </div>
+        <div class="form-box col-12 col-md-5">
+          <div class="button-box">
+            <div id="btn-index" ref="btn"></div>
+            <button type="button" id="toggle-btn1" ref="color1" class="toggle-btn" @click="loginPrev">Ingresar</button>
+            <button type="button" id="toggle-btn2" ref="color2" class="toggle-btn"
+              @click="registerPrev">Registrarme</button>
+          </div>
+
+          <!-- login form -->
+          <form ref="form1" id="group1" class="input-group justify-content-center mt-5" @submit.prevent="logIn(email,password)">
+            <div class="input-field d-flex mt-3">
+              <i class="bi bi-envelope-fill fs-3 fw-bolder"></i>
+              <input type="email" class="w-100"  aria-describedby="emailHelp" required
+              placeholder="Ingrese su email" v-model="email">
+            </div>
+            
+            <div class="input-field d-flex align-items-center justify-content-between">
+              <i class="bi bi-lock-fill fs-3"></i>
+              <input v-if="showPassword" type="password" class="w-100"  placeholder="Ingrese su contraseña" id="examplePassword1"
+              required v-model="password">
+              <input v-if="!showPassword" type="text" class="w-100"  placeholder="Ingrese su contraseña" id="examplePassword1"
+              required v-model="password">
+              <a @click="showPasswords"><i class="bi bi-eye-slash" v-if="showPassword"></i></a>
+              <a @click="showPasswords" v-cloak><i class="bi bi-eye" v-if="!showPassword"></i></a>
+            </div>
+            
+            <button type="submit" id="submitLogin" class="submit-btn btnL mt-3">Iniciar sesión <i
+                class="bi bi-box-arrow-in-right"></i></button>
+
+                <div v-if="error" id="advertencia" class="d-flex justify-content-center align-items-center pt-4" v-cloak>                                        
+                  <div class="d-flex align-items-center er" v-cloak>
+                      <div class="barraError" v-cloak></div>
+                      <div class="circleError" v-cloak><i class="bi bi-exclamation"></i></div>
+                  </div>                  
+                   <small class="text-danger"> Algo salió mal, vuelve a ingresar tu usuario y contraseña.
+                   </small>
+               </div>
+          </form>
+
+          <!-- register form -->
+          <form ref="form2" id="group2" class="input-group justify-content-center mt-4" @submit.prevent="registrationUser">
+            <div class="input-field d-flex">
+              <i class="bi bi-person-fill fs-3 fw-bolder"></i>
+              <input type="text" class="w-100"  aria-describedby="emailHelp"
+              v-model="registerFirstName" required placeholder="Nombre">
+            </div>
+            
+            <div class="input-field d-flex">
+              <i class="bi bi-person-plus-fill fs-3 fw-bolder"></i>
+              <input type="text" class="w-100" aria-describedby="emailHelp"
+              v-model="registerLastName" required placeholder="Apellido">
+            </div>
+
+            <div class="input-field d-flex">
+              <i class="bi bi-envelope-fill fs-3 fw-bolder"></i>
+              <input type="email" class="w-100"  aria-describedby="emailHelp" required
+              placeholder="Email" v-model="registerEmail">
+              
+            </div>
+            
+            <div class="input-field d-flex align-items-center justify-content-between">
+              <i class="bi bi-lock-fill fs-3"></i>             
+              <input v-if="showPassword" type="password" class="w-100" placeholder="Ingrese su contraseña" 
+              required v-model="registerPassword">            
+              <input v-if="!showPassword" type="text" class="w-100" placeholder="Ingrese su contraseña" 
+              required v-model="registerPassword">   
+              <a @click="showPasswords"><i class="bi bi-eye-slash" v-if="showPassword"></i></a>
+              <a @click="showPasswords" v-cloak><i class="bi bi-eye" v-if="!showPassword"></i></a>         
+            </div>
+            
+            
+            <button type="submit" id="submitRegister" class="submit-btn btnL mt-2" >Registrar <i
+                class="bi bi-check"></i></button>
+            <div v-if="error" id="advertencia" class="d-flex justify-content-center align-items-center pt-4" v-cloak>                                        
+              <div class="d-flex align-items-center er" v-cloak>
+                  <div class="barraError" v-cloak></div>
+                  <div class="circleError" v-cloak><i class="bi bi-exclamation"></i></div>
+              </div>                  
+                <small class="text-danger"> {{error_msg}}
+                </small>
+            </div>    
+          </form>
+        </div>
+      </div>
+      <div class="img">
+          <div class="imgLog">
+              <h1>asdasdf</h1>
+          </div>
+      </div>
+    </section>
+
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="./scripts/index.js"></script>
+
+</body>
+
+</html>

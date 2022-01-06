@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./styles/account.css">
+    <!-- <link rel="stylesheet" href="sweetalert2.min.css"> -->
+    <!-- <link rel="shortcut icon" href="./assets/bank_logo.png" type="image/x-icon"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <script src="https://kit.fontawesome.com/d55f8f06fd.js" crossorigin="anonymous"></script>
+    <title>Library</title>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+
+        <nav class="navbar navbar-light fixed-top d-flex align-items-center">
+            <div class="container-fluid d-flex align-items-center">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <i class="bi bi-book-fill cWhite"></i>                    
+                    <span class="px-2 cWhite"> Library</span> 
+                </a>
+                <div id="a">
+                    <ul class="navLIst d-flex justify-content-center flex-grow-1">
+                        <li class="nav-item">
+                          <a class="nav-link" aria-current="page" href="../index.html">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="#">Mi cuenta</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="mybooks.html">Mis Libros</a>
+                        </li>
+                        <li v-if="user.role === 'ADMIN'" class="nav-item">
+                          <a id="admin" class="nav-link active adminPanel cTwo" href="#">Admin Panel</a>
+                        </li>                    
+                    </ul>
+    
+                </div>
+               
+                <div class="navDrop dropdown ms-sm-0 flex-shrink-1 justify-content-end">
+                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                        id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                       <i class="bi bi-person-fill"></i>
+                        <span class="d-none d-sm-inline mx-1" v-cloak>{{user.firstName}}
+                            {{user.lastName}}</span>
+                    </a>
+                    <small class="d-none d-sm-inline mx-1 fw-lighter" v-cloak>{{user.email}}</small>
+                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item" href="myprofile.html">Mi perfil</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#" @click="logout">Salir</a></li>
+                    </ul>
+                </div>
+
+              <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon cWhite"></span>
+              </button>              
+            </div>
+        </nav>
+        <!-- menu responsive -->
+        <div class="offcanvas offcanvas-end menuRes" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <div class="dropdown py-sm-4 ms-sm-0 flex-shrink-1">
+                    <p  class="d-flex align-items-center text-decoration-none cWhite" >
+                       <i class="bi bi-person-fill"></i>
+                        <span >{{user.firstName}} {{user.lastName}}</span>
+                    </p>
+                    <small class="d-none d-sm-inline mx-1 fw-lighter" v-cloak>{{user.email}}</small>
+                    
+                </div>
+              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="#">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#">Mi cuenta</a>
+                  </li>
+                  <li v-if="user.role === 'ADMIN'" class="nav-item">
+                    <a class="nav-link active adminPanel cOne" href="#">Admin Panel</a>
+                  </li>
+                
+              </ul>
+              
+            </div>
+          </div>
+
+          <!-- main content -->
+        <section class="row mt-5 d-flex flex-column align-items-center">
+            <h2 class="text-center cOne mt-5 fs-5">EDIT BOOK</h2>
+            <div class="d-flex row justify-content-center">
+                <div class="col-12 col-md-8 mt-4 bgWhite pt-4 pb-4">
+                    <h3 class="fs-5 text-center cTwo fs-2"><i class="bi bi-book"></i> Libro Nº
+                        <button type="button" class="" @click="show_btn"><i class="bi bi-pencil text-primary fs-3"></i></button>
+                    </h3>
+                    <div class="row d-flex flex-wrap justify-content-center divGrey">                        
+                        <div class="col-12 col-xl-6" class="">
+                            <div class="">                                
+                                <div v-if="showbtn">
+                                    <form @submit.prevent="editBook()" class="editBook">
+                                      <div class="d-flex flex-column py-2 input-field">
+                                        <label for="" class="cOne"><b>Titulo:</b></label>
+                                        <input type="text" v-model="bookTitle">
+                                      </div>
+                                      <div class="d-flex flex-column py-2">
+                                        <label for="" class="cOne"><b>Autor:</b></label>
+                                        <input type="text" name="" v-model="bookAuthor" id="">
+                                      </div>
+                                      <div class="d-flex flex-column py-2">
+                                        <label for="" class="cOne"><b>Editorial:</b></label>
+                                        <input type="text" name="" v-model="bookEditorial" id="">
+                                      </div>
+                                      <div class="d-flex flex-column py-2">
+                                        <label for="" class="cOne"><b>Categoria:</b></label>
+                                        <input type="text" name="" v-model="bookCategory" id="">
+                                      </div>
+                                      <div class="d-flex flex-column py-2">
+                                        <label for="" class="cOne"><b>Precio:</b> </label>
+                                        <input type="number" name="" v-model="bookPrice" id="" class="px-4">
+                                      </div>            
+                                      <div class="d-flex flex-column py-2">
+                                        <label class="cOne">Fecha de Lanzamiento</label>
+                                        <input type="date" class="w-100"  aria-describedby="emailHelp" required
+                                        v-model="bookDate">
+                                     </div>                          
+                                      <div class="d-flex flex-column py-2">
+                                        <label for="" class="cOne"><b>Portada: </b></label>
+                                        <input ref="imageUploaderDos" type="file" @change="uploadImageBook($event)" id="img-uploader2">
+                                      </div>
+                                      <div class="d-flex flex-column py-2">
+                                        <label for="" class="cOne"><b>Reseña:</b></label>
+                                        <textarea name="" v-model="bookDescription" id="" cols="30" rows="2"></textarea>
+                                      </div>
+                                      <button ref="btn" class="btnAll  btn1 cWhite" :id="book.id"> Save </button>
+                                    </form>
+                                    <div class="error" v-if="errorEdit">
+                                      <div>
+                                        <small class="text-danger"><i class="bi bi-info-circle-fill px-3 cRed"></i>{{errorEditBook}}</small>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div v-else class="editB">      
+                                        <div class="d-flex flex-column py-2">
+                                            <span class="cOne fw-bolder">Titulo: </span>
+                                            <span >{{book.titulo}}</span>
+                                        </div>                                    
+                                        <div class="d-flex flex-column py-2">
+                                            <label class="cOne fw-bolder">Autor:</label>
+                                            <span>{{book.autor}}</span>
+                                        </div>
+                                        <div class="d-flex flex-column py-2">
+                                            <label class="cOne fw-bolder">Editorial: </label>
+                                            <span>{{book.editorial}}</span>
+                                        </div>
+                                        <div class="d-flex flex-column py-2">
+                                            <label class="cOne fw-bolder">Categoria: </label>
+                                            <span>{{book.categoria}}</span>
+                                        </div>
+                                        <div class="d-flex flex-column py-2">
+                                            <label class="cOne fw-bolder">Precio: </label>
+                                            <span>{{book.precio}}</span>
+                                        </div>
+                                        <div class="d-flex flex-column py-2">
+                                            <label class="cOne fw-bolder">Fecha de lanzamiento: </label>
+                                            <span>{{book.fechaLanzamiento}}</span>
+                                        </div>                                        
+                                        <div class="d-flex flex-column py-2">
+                                            <label class="cOne fw-bolder">Reseña: </label>
+                                            <span>{{book.resenia}}</span>
+                                        </div>                                     
+                                  </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-xl-6 mb-5">
+                            
+                            <div class="book-imgDetails">
+                                <img ref="imagePreviewDos" :src="book.portada" width="250" alt="portada libro">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>                       
+            
+        </section>
+        
+
+        
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="./scripts/main.js"></script>
+    <script src="./scripts/account.js"></script>
+
+</body>
+
+</html>
