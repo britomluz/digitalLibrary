@@ -4,7 +4,8 @@ Digital Library es una aplicacion hecha con Java, Spring, Spring Boot, Spring Se
 En la misma se desarrolla una API REST que sirve de backend para desarrollar la aplicacion completa que ya está subida a Heroku.
 Para el front se utilizo HTML5, CSS3. Bootstrap5, Javascript y VueJs.
 
-Para ingresar a la aplicación se puede ingresar con el siguiente link
+Para ingresar a la interfaz de la aplicación se puede ingresar con el siguiente link
+https://dlibl.herokuapp.com/
 
 Se puede crear un usuario nuevo o loguearse con uno existente.
 Se recomienda ingresar con el usuario Luz Brito el cual desde el backend tiene los permisos necesarios para realizar el CRUD.
