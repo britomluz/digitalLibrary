@@ -1,13 +1,20 @@
 package com.luz.library.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
 public class Book {
     @Id
@@ -22,107 +29,32 @@ public class Book {
     private LocalDate fechaLanzamiento;
     private String portada;
     private String resenia;
-    private BookType type;
-    private BookBestSeller bestSeller;
+    private Boolean bestSeller;
 
 
-    public Book() { }
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    //@Singular
+    @ToString.Exclude
+    @JsonIgnore
+    List<UserBook> userBooks;
 
-    public Book(String titulo, String autor, String editorial, String categoria, Double precio, LocalDate fechaLanzamiento, String portada, String resenia, BookType type, BookBestSeller bestSeller) {
-        this.titulo = titulo;
-        this.autor = autor;
-        this.editorial = editorial;
-        this.categoria = categoria;
-        this.precio = precio;
-        this.fechaLanzamiento = fechaLanzamiento;
-        this.portada = portada;
-        this.resenia = resenia;
-        this.type = type;
-        this.bestSeller = bestSeller;
+    /*
+    public Map<String, Object> bookMap(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", this.getId());
+        map.put("titulo", this.getTitulo());
+        map.put("autor", this.getAutor());
+        map.put("editorial", this.getEditorial());
+        map.put("categoria", this.getCategoria());
+        map.put("precio", this.getPrecio());
+        map.put("fechaLanzamiento", this.getFechaLanzamiento());
+        map.put("portada", this.getPortada());
+        map.put("resenia", this.getResenia());
+        map.put("bestSeller", this.getBestSeller());
 
-    }
+        return map;
+        }*/
 
-    public Long getId() {
-        return id;
-    }
 
-    public String getTitulo() {
-        return titulo;
-    }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo.toUpperCase();
-    }
-
-    public String getAutor() {
-        return autor;
-    }
-
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
-
-    public Double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(Double precio) {
-        this.precio = precio;
-    }
-
-    public LocalDate getFechaLanzamiento() {
-        return fechaLanzamiento;
-    }
-
-    public void setFechaLanzamiento(LocalDate fechaLanzamiento) {
-        this.fechaLanzamiento = fechaLanzamiento;
-    }
-
-    public String getPortada() {
-        return portada;
-    }
-
-    public void setPortada(String portada) {
-        this.portada = portada;
-    }
-
-    public String getResenia() {
-        return resenia;
-    }
-
-    public void setResenia(String resenia) {
-        this.resenia = resenia;
-    }
-
-    public String getEditorial() {
-        return editorial;
-    }
-
-    public void setEditorial(String editorial) {
-        this.editorial = editorial;
-    }
-
-    public BookType getType() {
-        return type;
-    }
-
-    public void setType(BookType type) {
-        this.type = type;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
-    public BookBestSeller getBestSeller() {
-        return bestSeller;
-    }
-
-    public void setBestSeller(BookBestSeller bestSeller) {
-        this.bestSeller = bestSeller;
-    }
 }

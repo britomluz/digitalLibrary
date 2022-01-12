@@ -2,7 +2,9 @@ const app = Vue.createApp({
     data(){
         return{
             books:[],
+            books2:[],
             users:[],
+            userbooks:[],
             book:[],
             user:[],
             booksYear:[],
@@ -10,13 +12,22 @@ const app = Vue.createApp({
             booksBestseller:[],
             booksFav:[],
             bookModal:[],
+            bookLib:[],
 
-            //filters
-            filterAuthor:"",
-            filterTitle:"",
-            filterDay:'',
-            filterMonth:'',
-            filterYear:'',
+            
+
+            //filters and pagination   
+            totalPages:"",
+            totalBooks:"",            
+            actualPage:0,
+            size:"",
+            sort:"",            
+            direction:"",
+            byTitulo:"",
+            byAutor:"",
+            byEditorial:'',
+            byCategoria:'',
+            byPrecio:500,         
             
 
             //add book
@@ -39,16 +50,7 @@ const app = Vue.createApp({
             //edit book
             errorEdit:false,
             errorEditBook:"",
-            showbtn:false,
-
-            bookTitleEdit:"",
-            bookAuthorEdit:"",
-            bookEditorialEdit:"",
-            bookCategoryEdit:"",
-            bookPriceEdit:"",
-            bookDateEdit:"",            
-            bookImageEdit: "",
-            bookDescriptionEdit:"",
+            showbtn:false,            
 
         }
 
@@ -56,26 +58,49 @@ const app = Vue.createApp({
 
     created(){
         this.dataBooks()
+        this.loadBooks()
         this.dataUsers()
         this.dataCurrentUser()
         this.loadDataBook()
        
     },
-    methods:{
-      dataBooks(){
-        axios.get("/api/books")
+    methods:{      
+      dataBooks(page){
+        
+        this.page = page-1        
+        this.size = 12    
+        
+        axios.get(`/api/books?page=${this.page}&size=${this.size}&sort=${this.sort}${this.direction}&filter%5Bcategoria%5D=${this.byCategoria}&filter%5Btitulo%5D=${this.byTitulo}&filter%5Bautor%5D=${this.byAutor}&filter%5Beditorial%5D=${this.byEditorial}&filter%5Bprecio%5D=${this.byPrecio}`)
         .then(res => {
-          this.books = res.data.sort((a,b) => parseInt(a.id - b.id))
-          this.booksYear = this.books.slice(10,16)
-          this.booksBestseller = this.books.filter(book => book.bestSeller == 'YES')
-          this.booksFav = this.books.filter(book => book.type == 'FAV')
-         // console.log(this.booksBestseller)
-          //this.accounts = res.data.accounts.sort((a,b) => parseInt(a.id - b.id))
+          this.books = res.data.content
+          this.actualPage = res.data.numberPage
+          //console.log(this.page)
+          this.totalBooks = res.data.totalBooks
+          this.totalPages = res.data.totalPages
+          this.size = res.data.size       
           
         
       })
         .catch(err => err.message)  
       },  
+      isActive(numPage){
+        
+        return numPage == this.actualPage+1 ? "active" : ""
+       
+    },
+      loadBooks(){
+
+        axios.get("/api/books")
+        .then(res => {
+          this.books2  = res.data.content.sort((a,b) => parseInt(a.id - b.id))         
+          this.booksYear = this.books2.slice(2,7)
+          this.booksBestseller = this.books2.filter(book => book.bestSeller == true)
+          this.booksFav = this.books2.filter(book => book.type == 'FAV')
+          
+        
+      })
+        .catch(err => err.message)  
+      },
       showBook(e) {
         let id = e.target.parentElement.id
         //console.log(id)
@@ -84,9 +109,8 @@ const app = Vue.createApp({
       },      
       loadDataBook(){
         const urlParam = new URLSearchParams(window.location.search);
-        const id = urlParam.get('id');        
-        
-        axios.get(`/api/book/${id}`)
+        const id = urlParam.get('id');                
+        axios.get(`/api/books/${id}`)
               .then(res => {                
                 this.book = res.data          
                 //console.log(this.book)
@@ -98,7 +122,10 @@ const app = Vue.createApp({
         axios.get("/api/users")
         .then(res => {
           this.users = res.data
+          
+
          // console.log(this.users)
+          
          // this.accounts = res.data.accounts.sort((a,b) => parseInt(a.id - b.id))
          
         
@@ -109,12 +136,22 @@ const app = Vue.createApp({
         axios.get("/api/users/current")
         .then(res => {
           this.user = res.data
-        //  console.log(this.user)
-        // this.accounts = res.data.accounts.sort((a,b) => parseInt(a.id - b.id))
-        
+          this.userbooks = this.user.userbooks
+
+          this.containsBook()
+
+         // console.log(this.userbooks)
+         // console.log(this.user)
         
       })
         .catch(err => err.message)  
+      },
+      containsBook(){
+        console.log(this.userbooks)
+
+        this.bookLib = this.userbooks.map( tb => tb.titulo)
+
+        console.log(this.bookLib)
       },
         showModal(id){
           console.log(id)
@@ -125,7 +162,7 @@ const app = Vue.createApp({
           e.preventDefault()
           console.log(e.target.parentElement.id)
           let bookId = e.target.parentElement.id
-          axios.patch("/api/books/bestsellers/edit",`bookId=${bookId}`, {headers:{'content-type':'application/x-www-form-urlencoded'}}) 
+          axios.patch(`/api/books/bestseller?bookId=${bookId}`, {headers:{'content-type':'application/x-www-form-urlencoded'}}) 
             .then(res => {
                 console.log("Libro agregado a BestSeller")      
                 console.log(res.data)
@@ -134,19 +171,17 @@ const app = Vue.createApp({
             })
             .catch(error=>{
                 console.log("No se pudo añadir el libro")
-                swal("Ha ocurrido un error", "No se puede agregar más de 10 libros a Best Sellers");   
+                swal("No se puede agregar más de 10 libros a Best Sellers.", "Debes eliminar un libro de Best Sellers para agregar otro.");   
             })
         },
         addLibrary(e){
           
           console.log(e.target.firstChild.value)
           let bookId = e.target.firstChild.value
-          axios.patch("/api/books/addLibrary/edit",`bookId=${bookId}`, {headers:{'content-type':'application/x-www-form-urlencoded'}}) 
+          axios.post("/api/books/userbooks",`bookId=${bookId}`, {headers:{'content-type':'application/x-www-form-urlencoded'}}) 
             .then(res => {
-                console.log("Libro agregado a la biblioteca")     
-                
-                window.location.reload();                 
-
+                console.log("Libro agregado a la biblioteca")                     
+                window.location.reload();   
             })
             .catch(error=>{
                 console.log("No se pudo añadir el libro")
@@ -230,7 +265,7 @@ const app = Vue.createApp({
              
         const date = new Date(this.bookDate).toISOString().slice(0,10);
         
-        axios.patch(`/api/book/edit/${bookId}`,{            
+        axios.put(`/api/books/${bookId}`,{            
             titulo: this.bookTitle,
             autor: this.bookAuthor,
             editorial: this.bookEditorial,
@@ -270,7 +305,7 @@ const app = Vue.createApp({
         .then((willDelete) => {
           if (willDelete) {
 
-            axios.delete(`/api/books/delete/${bookId}`)
+            axios.delete(`/api/books/${bookId}`)
           .then((response) => {
             console.log(response.data)  
             swal("El libro fue borrado con éxito", {
@@ -290,9 +325,9 @@ const app = Vue.createApp({
             window.location ='index.html'
         })
         .catch(err =>{
-            console.log(err)
-            this.errorAdd=true
-            this.errorAddBook=err.response.data
+            console.log(err.response.data)
+            //this.errorAdd=true
+            //this.errorAddBook=err.response.data
         })
     },            
 

@@ -11,7 +11,6 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,16 +23,17 @@ public class WebAuthorization extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 //.antMatchers(HttpMethod.GET, "/api/users").permitAll()
-                .antMatchers( "/api/users", "/rest/users","/api/books", "/rest/books", "/h2-console/**" ).permitAll()
-                .antMatchers(HttpMethod.POST, "/api/users", "/rest/users").permitAll()
-                .antMatchers(HttpMethod.PUT, "/api/users", "/api/users").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/books").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers(HttpMethod.POST, "/api/books").hasAnyAuthority("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/api/books").hasAnyAuthority("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/api/books").hasAnyAuthority("ADMIN")
-                .antMatchers( "/index.html", "/login.html", "/api/login.html", "/web/booking.html", "/web/checkout.html", "/scripts/**", "/assets/**","/styles/**").permitAll()
-                .antMatchers("/web/myaccount.html", "/web/order-details.html").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers("/web/admin.html").hasAuthority("ADMIN")
+                .antMatchers( "/api/users", "/rest/users","/api/books", "/rest/books", "/h2-console/**", "api/login").permitAll()
+                .antMatchers( "/index.html", "/login.html", "/scripts/**", "/assets/**","/styles/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/users","/api/users/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/users", "/rest/users/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/users/**").hasAuthority( "ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/api/books/**").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/books/**").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/books").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/books/**").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/books/**").hasAuthority("ADMIN")
+                .antMatchers("/web/account.html").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers("/web/admin.html").hasAuthority("ADMIN")
                 //.antMatchers("/rest/**", "/web/admin.html").hasAuthority("ADMIN")
                 .and()
@@ -56,7 +56,12 @@ public class WebAuthorization extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable();
         http.headers().frameOptions().disable();
-        http.exceptionHandling().authenticationEntryPoint((req, res, exc) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED));
+        http.exceptionHandling().authenticationEntryPoint((req, res, exc) -> {
+                    //res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                    res.sendRedirect("/login.html");
+        });
+
+
     }
 
     @Bean

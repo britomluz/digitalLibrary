@@ -113,14 +113,15 @@ body {
      outline: none;
      background: transparent;
  }
- .input-field input{
-     
-     border: none;
+ .input-field input{     
+     border: none!important;
      margin: 0;
+
  }
  .input-field input:focus{
-    border: none;
-    outline: none;
+    border: none!important;
+    outline: none!important;
+    box-shadow: none!important;
     margin: 0;
 }
  .input-field input::placeholder{

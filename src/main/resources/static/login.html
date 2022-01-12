@@ -35,18 +35,18 @@
           </div>
 
           <!-- login form -->
-          <form ref="form1" id="group1" class="input-group justify-content-center mt-5" @submit.prevent="logIn(email,password)">
+          <form ref="form1" id="group1" @submit.prevent="logIn(email,password)" class="input-group justify-content-center mt-5 needs-validation"  novalidate>
             <div class="input-field d-flex mt-3">
               <i class="bi bi-envelope-fill fs-3 fw-bolder"></i>
-              <input type="email" class="w-100"  aria-describedby="emailHelp" required
+              <input type="email" class="w-100 form-control"  aria-describedby="emailHelp" required
               placeholder="Ingrese su email" v-model="email">
             </div>
             
             <div class="input-field d-flex align-items-center justify-content-between">
               <i class="bi bi-lock-fill fs-3"></i>
-              <input v-if="showPassword" type="password" class="w-100"  placeholder="Ingrese su contraseña" id="examplePassword1"
+              <input v-if="showPassword" type="password" class="w-100 form-control"  placeholder="Ingrese su contraseña" id="examplePassword1"
               required v-model="password">
-              <input v-if="!showPassword" type="text" class="w-100"  placeholder="Ingrese su contraseña" id="examplePassword1"
+              <input v-if="!showPassword" type="text" class="w-100 form-control"  placeholder="Ingrese su contraseña" id="examplePassword1"
               required v-model="password">
               <a @click="showPasswords"><i class="bi bi-eye-slash" v-if="showPassword"></i></a>
               <a @click="showPasswords" v-cloak><i class="bi bi-eye" v-if="!showPassword"></i></a>
@@ -66,32 +66,32 @@
           </form>
 
           <!-- register form -->
-          <form ref="form2" id="group2" class="input-group justify-content-center mt-4" @submit.prevent="registrationUser">
+          <form ref="form2" id="group2" class="input-group justify-content-center mt-4 needs-validation" @submit.prevent="registrationUser" novalidate>
             <div class="input-field d-flex">
               <i class="bi bi-person-fill fs-3 fw-bolder"></i>
-              <input type="text" class="w-100"  aria-describedby="emailHelp"
-              v-model="registerFirstName" required placeholder="Nombre">
+              <input type="text" class="w-100 form-control"  aria-describedby="emailHelp"
+              v-model="registerFirstName" placeholder="Nombre" required>
             </div>
             
             <div class="input-field d-flex">
               <i class="bi bi-person-plus-fill fs-3 fw-bolder"></i>
-              <input type="text" class="w-100" aria-describedby="emailHelp"
-              v-model="registerLastName" required placeholder="Apellido">
+              <input type="text" class="w-100 form-control" aria-describedby="emailHelp"
+              v-model="registerLastName" placeholder="Apellido" required>
             </div>
 
             <div class="input-field d-flex">
               <i class="bi bi-envelope-fill fs-3 fw-bolder"></i>
-              <input type="email" class="w-100"  aria-describedby="emailHelp" required
-              placeholder="Email" v-model="registerEmail">
+              <input type="email" class="w-100 form-control"  aria-describedby="emailHelp" 
+              placeholder="Email" v-model="registerEmail" required>
               
             </div>
             
             <div class="input-field d-flex align-items-center justify-content-between">
               <i class="bi bi-lock-fill fs-3"></i>             
-              <input v-if="showPassword" type="password" class="w-100" placeholder="Ingrese su contraseña" 
-              required v-model="registerPassword">            
-              <input v-if="!showPassword" type="text" class="w-100" placeholder="Ingrese su contraseña" 
-              required v-model="registerPassword">   
+              <input v-if="showPassword" type="password" class="w-100 form-control" placeholder="Ingrese su contraseña" 
+               v-model="registerPassword" required>            
+              <input v-if="!showPassword" type="text" class="w-100 form-control" placeholder="Ingrese su contraseña" 
+              v-model="registerPassword" required>   
               <a @click="showPasswords"><i class="bi bi-eye-slash" v-if="showPassword"></i></a>
               <a @click="showPasswords" v-cloak><i class="bi bi-eye" v-if="!showPassword"></i></a>         
             </div>
@@ -99,22 +99,16 @@
             
             <button type="submit" id="submitRegister" class="submit-btn btnL mt-2" >Registrar <i
                 class="bi bi-check"></i></button>
-            <div v-if="error" id="advertencia" class="d-flex justify-content-center align-items-center pt-4" v-cloak>                                        
+            <div v-if="errorR" id="advertencia" class="d-flex justify-content-center align-items-center pt-4" v-cloak>                                        
               <div class="d-flex align-items-center er" v-cloak>
                   <div class="barraError" v-cloak></div>
                   <div class="circleError" v-cloak><i class="bi bi-exclamation"></i></div>
               </div>                  
-                <small class="text-danger"> {{error_msg}}
-                </small>
+                <small class="text-danger"> {{error_msgRegister}} </small>
             </div>    
           </form>
         </div>
-      </div>
-      <div class="img">
-          <div class="imgLog">
-              <h1>asdasdf</h1>
-          </div>
-      </div>
+      </div>      
     </section>
 
   </div>
@@ -127,6 +121,27 @@
   <script src="https://unpkg.com/vue@next"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="./scripts/index.js"></script>
+  <script>
+    (function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+  </script>
 
 </body>
 

@@ -15,6 +15,10 @@ const app = Vue.createApp({
         //errores
         error: false,
         error_msg: "",
+
+        //errors
+        errorR:false,
+        error_msgRegister:"",
         }
     },
     created(){
@@ -45,10 +49,8 @@ const app = Vue.createApp({
                 this.registerPassword=""
             })
             .catch(error =>{               
-                this.error = true;                     
-                this.error_msg = error.response.data   
-                console.log(error.response)         
-                console.log(error.response.data)
+                this.errorR = true;                     
+                this.error_msgRegister = error.response.data                  
             })          
         },
         capitalizeName(name){

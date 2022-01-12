@@ -1,6 +1,8 @@
 package com.luz.library.dtos;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.luz.library.models.Book;
+import com.luz.library.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,14 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class BookCreateDTO {
+public class UserBookDTO {
+    private Long id;
     private String titulo;
     private String autor;
-    private String editorial;
-    private String categoria;
-    private String precio;
-    private String fechaLanzamiento;
-    private String portada;
-    private String resenia;
-
 }

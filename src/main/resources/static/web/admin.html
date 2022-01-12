@@ -92,79 +92,90 @@
         </nav>
         
         <section class="row mt-5 d-flex flex-column align-items-center">
-            <h2 class="text-center cOne mt-5">ADMIN PANEL</h2>
-            <div class="d-flex row justify-content-center">
-                <div class="col-12 col-md-8 mt-4 bgWhite pt-4 pb-4">
-                    <h3 class="fs-5 text-center cTwo">AGREGAR LIBRO</h3>
-                    <form @submit.prevent="addBook" class="addBook bgWhite">
-                        <div class="row d-flex justify-content-center">
-                            <div class="col-12 col-md-4 bgWhite">
-                                <div class="input-field d-flex mt-3 d-flex flex-column">
-                                    <small>Nombre del libro</small>
-                                    <input type="text" class="w-100"  aria-describedby="emailHelp" required
-                                    v-model="bookTitle">
-                                </div>
-                                <div class="input-field d-flex mt-3 d-flex flex-column">
-                                    <small>Nombre del autor</small>
-                                    <input type="text" class="w-100"  aria-describedby="emailHelp" required
-                                    v-model="bookAuthor">
-                                </div>
-                                <div class="input-field d-flex mt-3 d-flex flex-column">
-                                    <small>Nombre de la editorial</small>
-                                    <input type="text" class="w-100"  aria-describedby="emailHelp" required
-                                    v-model="bookEditorial">
-                                </div>
-                                <div class="input-field d-flex mt-3 d-flex flex-column">
-                                    <small>Nombre de la categoría</small>
-                                    <input type="text" class="w-100"  aria-describedby="emailHelp" required
-                                    v-model="bookCategory">
-                                </div>
-                                <div class="input-field d-flex mt-3 d-flex flex-column">
-                                    <small>Precio</small>
-                                    <input type="number" class="w-100"  aria-describedby="emailHelp" required
-                                    v-model="bookPrice">
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-4 bgWhite">                                
-                                <div class="input-field d-flex mt-3 d-flex flex-column">
-                                    <small>Fecha de Lanzamiento</small>
-                                    <input type="date" class="w-100"  aria-describedby="emailHelp" required
-                                    v-model="bookDate">
-                                </div>
-                                <div class="input-field d-flex mt-3 d-flex flex-column">
-                                    <small>Imagen de portada</small>
-                                    <div class="containerImg d-flex">
-                                        <div class="cardImg">
-                                          <img :src="bookImage" id="img-preview" ref="imagePreviewDos">
-                                        </div>
-                                        <div class="cardImg-footer d-flex justify-content-between">
-                                          <label class="text-wrap px-2 qBg1 mt-auto" for="img-uploader2"><small>Seleccionar Imagen</small></label>
-                                          <input ref="imageUploaderDos" type="file" @change="uploadImageBook($event)" id="img-uploader2">
-                                        </div>
-                                      </div>                                    
-                                </div>
-                                <div class="input-field d-flex mt-3 d-flex flex-column">
-                                    <small>Reseña</small>
-                                    <textarea rows="3" v-model="bookDescription"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex flex-column align-items-center mt-4">
-                            <button class="btnAll btn1 cWhite">Agregar</button>
-                        </div>
-                        
-                    </form>
-                    <div class="error" v-if="errorAdd">
-                        <div>
-                          <small class="text-danger"><i class="bi bi-info-circle-fill px-3 cRed"></i>{{errorAddBook}}</small>
-                        </div>
-                    </div>
-                </div>
+            <h2 class="text-center cOne mt-5">ADMIN PANEL</h2>            
+            <div>
                 
             </div>
             <div class="mt-5 bgWhite col-12 col-md-8 pt-4 pb-4">
-                <h3 class="fs-5 text-center cTwo">LISTADO DE LIBROS</h3>
-                <div class="table-responsive mt-5">
+                <div class="row">
+                    <div class="col-12 col-sm-2">
+                        <a href="./add-book.html" class="btnAll btn1 cWhite text-decoration-none"><i class="bi bi-plus"></i> Agregar Libro</a>
+                    </div>
+                    <div class="col-12 col-sm-9">
+                        <h3 class="fs-5 text-center cTwo">LISTADO DE LIBROS</h3>
+                    </div>
+                </div>
+                
+                <!-- filters -->
+                <section class="filters d-flex flex-wrap justify-content-center py-5">
+                    <form @change.prevent="dataBooks()" class="d-flex flex-wrap justify-content-center">
+                        <div class="d-flex flex-column px-3 py-2">
+                            <h6>Ordenar por:</h6>
+                            <div class="d-flex">
+                                <div class="d-flex align-items-center">                        
+                                    <select name="" id="" class="px-3 py-1"  v-model="sort">
+                                        <option value="">Ninguno</option>
+                                        <option value="titulo">Titulo</option>
+                                        <option value="autor">Autor</option>
+                                        <option value="editorial">Editorial</option>
+                                        <option value="precio">Precio</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex align-items-center pr orden">                             
+                                    <input type="radio" name="direction" id="desc" value=",desc" v-model="direction">
+                                    <label for="desc"><i class="bi bi-arrow-down cOne"></i></label>
+                                    <input type="radio" name="direction" id="asc" value=",asc" v-model="direction">
+                                    <label for="asc"><i class="bi bi-arrow-up cOne"></i></label>
+                                </div>
+                            </div>
+                            
+                        </div>            
+                        <div class="filt d-flex flex-column px-3 py-2">
+                            <h6>Buscar por Nombre:</h6>
+                            <div class="d-flex align-items-center">                
+                                <input type="search" name="" id="" placeholder="Nombre del libro" v-model="byTitulo">
+                                <i class="bi bi-check-square-fill px-2 fs-4 cOne"></i>
+                            </div>
+                        </div>
+                        <div class="filt d-flex flex-column px-3 py-2">
+                            <h6>Buscar por Autor:</h6>
+                            <div class="d-flex align-items-center">                
+                                <input type="search" name="" id="" placeholder="Nombre del autor" v-model="byAutor">
+                                <i class="bi bi-check-square-fill px-2 fs-4 cOne"></i>
+                            </div>
+                        </div>
+                        <div class="filt d-flex flex-column px-3 py-2">
+                            <h6>Buscar por Editorial:</h6>
+                            <div class="d-flex align-items-center">                
+                                <input type="search" name="" id="" placeholder="Nombre de la editorial" v-model="byEditorial">
+                                <i class="bi bi-check-square-fill px-2 fs-4 cOne"></i>
+                            </div>
+                        </div>               
+                        <div class="filt d-flex flex-column px-3 py-2">
+                            <h6>Buscar por rango de Precio:</h6>
+                            <div class="d-flex order">
+                                <div>                                    
+                                    <div class="valuePrecio"><span>$0</span></div>                                    
+                                </div>
+                                <div class="d-flex align-items-center field px-2">
+                                    <input class="rangeSlider" v-model="byPrecio"
+                                        type="range" id="range" name="range"
+                                        min="0" max="500">
+                                </div>
+                                <div>
+                                    <span class="cOne">$</span>
+                                    <input type="number" name="" id="valueRangeInput" v-model="byPrecio">
+                                </div>
+                                
+                            </div>
+
+                        </div>         
+                    </form>
+                    
+                </section>
+
+                <!-- book table -->
+                <div class="table-responsive mt-2">
                     <table class="table">
                         <thead>
                           <tr>
@@ -172,6 +183,7 @@
                             <th scope="col" class="cOne">Portada</th>
                             <th scope="col" class="cOne">Titulo</th>
                             <th scope="col" class="cOne">Autor</th>
+                            <th scope="col" class="cOne">Precio</th>
                             <th scope="col" class="cOne">BestSeller</th>
                             <th scope="col" class="cOne" colspan="2">Acciones</th>
                           </tr>
@@ -182,11 +194,12 @@
                             <td><img :src="book.portada" width="50" height="70" alt=""></td>
                             <td class="text-wrap">{{book.titulo}}</td>
                             <td>{{book.autor}}</td>
+                            <td>${{book.precio}}</td>
                             <td>
-                                <button @click="addBestSeller" v-if="book.bestSeller == 'YES'" :id="book.id" data-toggle="tooltip" data-placement="bottom" title="Agregar a BestSellers">
+                                <button @click="addBestSeller" v-if="book.bestSeller == true" :id="book.id" data-toggle="tooltip" data-placement="bottom" title="Agregar a BestSellers">
                                     <i class="bi bi-star-fill cOne"></i>
                                 </button>
-                                <button @click="addBestSeller" v-if="book.bestSeller == 'NO'" :id="book.id" data-toggle="tooltip" data-placement="bottom" title="Agregar a BestSellers">
+                                <button @click="addBestSeller" v-if="book.bestSeller == false" :id="book.id" data-toggle="tooltip" data-placement="bottom" title="Agregar a BestSellers">
                                     <i class="bi bi-star cOne"></i>
                                 </button>
                             </td>
@@ -203,8 +216,37 @@
                           </tr>                         
                         </tbody>
                       </table>
+                </div>               
+
+                <!-- withour results   -->
+                <div v-if="books.length === 0">
+                    <div class="alert">
+                        <p class="text-danger text-center">No se encontraron resultados</p>
+                    </div>
+                    
                 </div>
-            </div>            
+
+                <!-- pagination -->                    
+                <nav class="mt-auto" aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      <li v-for="page in totalPages" :class="isActive(page)" class="page-item" @click="dataBooks(page)">
+                          <a class="page-link">{{page}}</a>
+                      </li>                          
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                  <small>Página {{actualPage+1}} de {{totalPages}}</small>
+                  <small >{{totalBooks}} resultados</small>
+            </div>
         </section>
         
 

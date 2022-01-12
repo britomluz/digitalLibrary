@@ -1,14 +1,18 @@
 package com.luz.library.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import javax.persistence.*;
+import java.util.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
-public class User {
+public class User  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
@@ -20,57 +24,22 @@ public class User {
     private UserRole role;
 
 
-    public User(){ }
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    //@Singular
+    @ToString.Exclude
+    @JsonIgnore
+    List<UserBook> userBooks;
 
-    public User(String firstName, String lastName, String email, String password, UserRole role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
+    public Map<String, Object> userMap(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", this.getId());
+        map.put("fisrtName", this.getFirstName());
+        map.put("lastName", this.getLastName());
+        map.put("email", this.getEmail());
+        map.put("password", this.getPassword());
+        map.put("userRole", this.getRole());
+        map.put("userbooks", this.getUserBooks());
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public UserRole getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
+        return map;
     }
 }
