@@ -1,8 +1,10 @@
 # digitalLibrary
 
-Digital Library es una aplicacion hecha con Java, Spring, Spring Boot, Spring Security, JPA, Hibernate, Graddle y H2 console.
+Digital Library es una aplicacion hecha con:
+BACKEND: Java, Spring, Spring Boot, Spring Security, JPA, Hibernate, Graddle y H2 console, Lombok.
+FRONTEND: Frontend se utilizo HTML5, CSS3. Bootstrap5, Javascript y VueJs.
 En la misma se desarrolla una API REST que sirve de backend para desarrollar la aplicacion completa que ya está subida a Heroku.
-Para el front se utilizo HTML5, CSS3. Bootstrap5, Javascript y VueJs.
+
 
 Para ingresar a la interfaz de la aplicación se puede ingresar con el siguiente link
 https://dlibl.herokuapp.com/
