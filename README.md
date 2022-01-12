@@ -8,10 +8,7 @@ Para ingresar a la interfaz de la aplicación se puede ingresar con el siguiente
 https://dlibl.herokuapp.com/
 
 Se puede crear un usuario nuevo o loguearse con uno existente.
-Se recomienda ingresar con el usuario Luz Brito el cual desde el backend tiene los permisos necesarios para realizar el CRUD.
 
-email: britomluz@gmail.com
-password: luz123
 
 En la aplicacion se puede:
 
@@ -27,31 +24,92 @@ Como usuario administrador:
       - Agregar uno o más libros
       - Editar uno o más libros
       - Eliminar uno o más libros
+
+Para correr la aplicacion primero se debe loguear con las siguientes credenciales:
+-Recibe los datos por parametro
+- email: britomluz@gmail.com
+- password: luz123
+- url: http://localhost:8080/api/login
+- ejemplo peticion completa: http://localhost:8080/api/login?email=britomluz@gmail.com&password=luz123
+
+Luego de estar logeuado las rutas para hacer el CRUD en son:
+
+***********GET**********
+
+OBTENER TODOS LOS LIBROS CON PAGINACIÓN, FILTROS Y ORDEN
+- Recibe los datos por parametro
+- url: http://localhost:8080/api/books
+- Se puede elegir una pagina: elegir el ordenamiento de forma ascendente o descendente por id, titulo, autor, categoria, editorial o precio; se puede filtrar por titulo, autor, editorial, categoria y/o precio.
+- peticion completa sin parametros(luego del igual se debe poner el parametro, si esta vacio devuelve la lista sin filtrar. El precio es el unico parametro que si debe estar asignado): http://localhost:8080/api/books?page=&size=&sort&filter%5Btitulo%5D=&filter%5Bautor%5D=&filter%5Beditorial%5D=&filter%5Bcategoria%5D=&filter%5Bprecio%5D=500
+- ejemplo de peticion completa con filtro por categoria "ficcion" ordenado por "titulo" de forma descendente: http://localhost:8080/api/books?page=&size=&sort=titulo,desc&filter%5Btitulo%5D=&filter%5Bautor%5D=&filter%5Beditorial%5D=&filter%5Bcategoria%5D=ficcion&filter%5Bprecio%5D=500
+
+OBTENER UN LIBRO EN PARTICULAR POR ID
+- url: http://localhost:8080/api/books{id}
+- ejemplo peticion completa: http://localhost:8080/api/books/3
+
+
+***********POST**********
+
+AGREGAR LIBRO  
+- Recibe los datos en un JSON
+- url: http://localhost:8080/api/books
+- Ejemplo de JSON:
+  {
+  "titulo": "string",
+  "autor": "string",
+  "editorial": "string",
+  "categoria": "string",
+  "precio": "string",
+  "fechaLanzamiento": "2004-07-24",
+  "portada": "string",
+  "resenia": "string"
+}
+
+AGREGAR UN LIBRO A LA BIBLIOTECA
+- Recibe un id de un libro por parametro
+- url: http://localhost:8080/api/books/userbook
+- ejemplo: http://localhost:8080/api/books/userbook?bookId=2
+
+
+***********PUT**********
+
+EDITAR LIBRO
+- Recibe los datos en un JSON y es necesario pasarle el id del libro en el path
+- url: http://localhost:8080/api/books{id}
+- ejemplo de peticion: http://localhost:8080/api/books/5
+- Ejemplo de JSON:
+  {
+  "titulo": "string",
+  "autor": "string",
+  "editorial": "string",
+  "categoria": "string",
+  "precio": "string",
+  "fechaLanzamiento": "2019-03-09",
+  "portada": "string",
+  "resenia": "string"
+}
+
+
+***********DELETE**********
+
+BORRAR LIBRO
+- Recibe el id del libro en el path
+- url: http://localhost:8080/api/books{id}
+- ejemplo: http://localhost:8080/api/books/12
+
+
+***********PATCH**********
+
+AGREGAR LIBRO A BESTSELLER
+- Se edita la propiedad "bestSeller" el cual es un booleano
+- Recibe un id de un libro por parametro
+- url: http://localhost:8080/api/books/userbook
+- ejemplo: http://localhost:8080/api/books/userbook?bookId=2
+
+
+
+
       
       
       
-Para poder realizar estas acciones desde el back cuenta con las clases Book y User donde se establecen los atributos necesarios para poder desarrollar la app
-con sus respectivos repositorios, servicios, DTOs y controladores.
- 
-La app cuenta una capa de seguridad con Spring Security por lo que es necesario ingresar como usuario "ADMIN" para realizar el CRUD.
- 
-En el BookController se encuentran los métodos GET, POST, PATCH y DELETE necesarios, comenzando la ruta para hacer la peticion en "/api"
-y en el mismo se realizan las validaciones necesarias para realizar con éxito el CRUD de lo contrario arroja un ResponseEntity con el error indicado.
 
-Los datos persisten en H2 console, la cual cuenta con seguridad y es necesario estar logeado para ver los datos.
-
-La ruta de la API para los libros es http://localhost:8080/api/books o bien  http://localhost:8080/rest/books
-La ruta de la API para los usuarios es http://localhost:8080/api/users o bien  http://localhost:8080/rest/users
-
-
-NOTA: en este caso para facilitar la vista de la API se ha dejado publico el acceso a H2 y a las API
-
-Para verlo directamente se debe ingresar desde el link de heroku:
-https://dlibl.herokuapp.com/rest/books
-https://dlibl.herokuapp.com/api/books
-
-https://dlibl.herokuapp.com/rest/users
-https://dlibl.herokuapp.com/api/users
-
-
-Cuenta con jUnit para el testeo, la cual pasó con exito el test de los metodos principales.
