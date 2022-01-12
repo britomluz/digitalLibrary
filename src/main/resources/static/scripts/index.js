@@ -30,7 +30,7 @@ const app = Vue.createApp({
             {headers:{'content-type':'application/x-www-form-urlencoded'}})
             .then(res => {                
                 if(res.status === 200){                   
-                   window.location ='web/account.html'
+                   window.location ='web/dashboard.html'
                }
             })           
             .catch(error=> {

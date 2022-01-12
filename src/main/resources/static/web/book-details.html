@@ -19,54 +19,48 @@
 <body>
     <div id="app" v-cloak>
 
-        <nav class="navbar navbar-light fixed-top d-flex align-items-center">
-            <div class="container-fluid d-flex align-items-center">
-                <a class="navbar-brand d-flex align-items-center" href="#">
-                    <i class="bi bi-book-fill cWhite"></i>                    
-                    <span class="px-2 cWhite"> Library</span> 
-                </a>
-                <div id="a">
-                    <ul class="navLIst d-flex justify-content-center flex-grow-1">
-                        <li class="nav-item">
-                          <a class="nav-link" aria-current="page" href="../index.html">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#">Mi cuenta</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="mybooks.html">Mis Libros</a>
-                        </li>
-                        <li v-if="user.role === 'ADMIN'" class="nav-item">
-                          <a id="admin" class="nav-link active adminPanel cTwo" href="#">Admin Panel</a>
-                        </li>                    
-                    </ul>
-    
-                </div>
-               
-                <div class="navDrop dropdown ms-sm-0 flex-shrink-1 justify-content-end">
-                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
-                        id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                       <i class="bi bi-person-fill"></i>
-                        <span class="d-none d-sm-inline mx-1" v-cloak>{{user.firstName}}
-                            {{user.lastName}}</span>
-                    </a>
-                    <small class="d-none d-sm-inline mx-1 fw-lighter" v-cloak>{{user.email}}</small>
-                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="myprofile.html">Mi perfil</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#" @click="logout">Salir</a></li>
-                    </ul>
-                </div>
+      <nav class="navbar navbar-light fixed-top d-flex align-items-center">
 
-              <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                <span class="navbar-toggler-icon cWhite"></span>
-              </button>              
+        <div class="container-fluid d-flex align-items-center">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="bi bi-book-fill cWhite"></i>                    
+                <span class="px-2 cWhite"> Library</span> 
+            </a>
+            <ul id="navBar" class="navLIst d-flex justify-content-center flex-grow-1">
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="../index.html">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="dashboard.html">Bilioteca</a>
+                </li>                    
+                <li v-if="user.role === 'ADMIN'" class="nav-item">
+                  <a id="admin" class="nav-link adminPanel cTwo active" href="admin.html">Admin Panel</a>
+                </li>
+                
+            </ul>
+
+            <div class="dropdown ms-sm-0 flex-shrink-1 justify-content-end">
+                <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                    id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                   <i class="bi bi-person-fill"></i>
+                    <span class="d-none d-sm-inline mx-1" v-cloak>{{user.firstName}}
+                        {{user.lastName}}</span>
+                </a>
+                <small class="d-none d-sm-inline mx-1 fw-lighter" v-cloak>{{user.email}}</small>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser1">
+                    <li><a class="dropdown-item" href="library.html">Mis libros</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#" @click="logout">Salir</a></li>
+                </ul>
             </div>
-        </nav>
-        <!-- menu responsive -->
-        <div class="offcanvas offcanvas-end menuRes" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+
+
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <span class="navbar-toggler-icon cWhite"></span>
+          </button>
+          <div class="offcanvas offcanvas-end menuRes" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             <div class="offcanvas-header">
                 <div class="dropdown py-sm-4 ms-sm-0 flex-shrink-1">
                     <p  class="d-flex align-items-center text-decoration-none cWhite" >
@@ -81,19 +75,22 @@
             <div class="offcanvas-body">
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li class="nav-item">
-                  <a class="nav-link" aria-current="page" href="#">Inicio</a>
+                  <a class="nav-link" aria-current="page" href="../index.html">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#">Mi cuenta</a>
+                    <a class="nav-link" aria-current="page" href="dashboard.html">Biblioteca</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="library.html">Mis Libros</a>
                   </li>
                   <li v-if="user.role === 'ADMIN'" class="nav-item">
-                    <a class="nav-link active adminPanel cOne" href="#">Admin Panel</a>
-                  </li>
-                
-              </ul>
-              
+                    <a class="nav-link adminPanel cOne active" href="admin.html">Admin Panel</a>
+                  </li>                    
+              </ul>                  
             </div>
           </div>
+        </div>
+    </nav>
 
           <!-- main content -->
         <section class="row mt-5 d-flex flex-column align-items-center">

@@ -122,13 +122,7 @@ const app = Vue.createApp({
         axios.get("/api/users")
         .then(res => {
           this.users = res.data
-          
-
-         // console.log(this.users)
-          
-         // this.accounts = res.data.accounts.sort((a,b) => parseInt(a.id - b.id))
          
-        
       })
         .catch(err => err.message)  
       }, 
