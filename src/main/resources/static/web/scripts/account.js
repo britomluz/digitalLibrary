@@ -69,6 +69,8 @@ const app = Vue.createApp({
         
         this.page = page-1        
         this.size = 12    
+
+        console.log(this.page)
         
         axios.get(`/api/books?page=${this.page}&size=${this.size}&sort=${this.sort}${this.direction}&filter%5Bcategoria%5D=${this.byCategoria}&filter%5Btitulo%5D=${this.byTitulo}&filter%5Bautor%5D=${this.byAutor}&filter%5Beditorial%5D=${this.byEditorial}&filter%5Bprecio%5D=${this.byPrecio}`)
         .then(res => {
@@ -83,6 +85,20 @@ const app = Vue.createApp({
       })
         .catch(err => err.message)  
       },  
+      getPrevPage(){            
+        if(this.actualPage-1 > 1){
+            this.actualPage --
+        }
+       this.dataBooks(this.actualPage)
+      },
+      getNextPage(){       
+        console.log()     
+        console.log(this.actualPage)
+          if(this.actualPage < this.totalPages-1){
+              this.actualPage ++
+          }
+      this.dataBooks(this.actualPage+1)
+      },
       isActive(numPage){
         
         return numPage == this.actualPage+1 ? "active" : ""
